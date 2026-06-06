@@ -1,0 +1,13 @@
+node_modules
+npm-debug.log
+.env
+.git
+.gitignore
+.system_generated
+scratch
+Testing Data
+key.pem
+cert.pem
+uploads/*.pdf
+uploads/*.jpg
+uploads/*.png

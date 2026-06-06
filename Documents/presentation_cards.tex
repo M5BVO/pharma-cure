@@ -1,0 +1,140 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usetikzlibrary{shapes.geometric, arrows, positioning, shadow}
+
+\geometry{margin=0.6in}
+
+\definecolor{clinicalblue}{HTML}{005b96}
+\definecolor{clinicalteal}{HTML}{00a896}
+
+\newtcolorbox{presentercard}[2][]{
+    colback=white,
+    colframe=clinicalblue,
+    fonttitle=\bfseries\Large,
+    title=#2,
+    enhanced,
+    drop shadow={black!20!white},
+    sharp corners,
+    boxrule=1.2mm,
+    #1
+}
+
+\begin{document}
+
+\begin{center}
+    \Huge \textbf{Pharma-Cure V4: Technical Defense} \\
+    \large \textit{Core Systems Architecture Presentation Cards}
+\end{center}
+
+\vspace{0.3cm}
+
+\begin{presentercard}{CARD 1: DOCKER - IMMUTABLE INFRASTRUCTURE}
+    \begin{minipage}{0.62\textwidth}
+        \textbf{[CONCEPT]} "We ship a complete, pre-configured server environment."
+        \begin{itemize}
+            \item \textbf{Containerization:} Isolated userspace ensures the app behaves identically on any OS.
+            \item \textbf{Alpine Base:} Built on a security-hardened, minimalist Linux distribution to reduce attack surfaces.
+            \item \textbf{Auto-Bootstrap:} Detects empty volumes and executes the SQL schema automatically during the "Entrypoint" phase.
+        \end{itemize}
+    \end{minipage}
+    \begin{minipage}{0.35\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.6, every node/.style={transform shape}]
+            \draw[thick, fill=clinicalblue!15] (0,0) rectangle (4,4);
+            \node at (2,3.5) {\textbf{IMMUTABLE IMAGE}};
+            \draw[fill=white] (0.5,0.5) rectangle (3.5,1.2) node[midway] {Alpine OS};
+            \draw[fill=white] (0.5,1.4) rectangle (3.5,2.1) node[midway] {NodeJS Env};
+            \draw[fill=clinicalblue!30] (0.5,2.3) rectangle (3.5,3) node[midway] {PHARMA-CURE};
+        \end{tikzpicture}
+    \end{minipage}
+\end{presentercard}
+
+\vspace{0.4cm}
+
+\begin{presentercard}{CARD 2: RELATIONAL CORE \& INTEGRITY}
+    \begin{minipage}{0.62\textwidth}
+        \textbf{[CONCEPT]} "Highly normalized data structure with strict referential integrity."
+        \begin{itemize}
+            \item \textbf{3rd Normal Form (3NF):} Eliminates data redundancy and ensures logical consistency across actors.
+            \item \textbf{Enforced Logic:} Uses \texttt{ON DELETE CASCADE} to ensure medical records are purged when user accounts are closed.
+            \item \textbf{Role Segregation:} Strict \texttt{ENUM} constraints enforce access control for Admins, Pharmacists, and Patients.
+        \end{itemize}
+    \end{minipage}
+    \begin{minipage}{0.35\textwidth}
+        \centering
+        \begin{tikzpicture}[node distance=0.8cm, scale=0.6, every node/.style={transform shape}]
+            \node (u) [draw, rounded corners, fill=clinicalblue!10] {USERS};
+            \node (p) [draw, below=of u] {Profiles};
+            \node (pr) [draw, below=of p, fill=clinicalteal!15] {Proposals};
+            \node (o) [draw, right=of pr] {Orders};
+            \draw[->, thick] (u) -- (p);
+            \draw[->, thick] (p) -- (pr);
+            \draw[->, thick] (pr) -- (o);
+        \end{tikzpicture}
+    \end{minipage}
+\end{presentercard}
+
+\vspace{0.4cm}
+
+\begin{presentercard}{CARD 3: ATOMIC MARKET TRANSACTIONS}
+    \textbf{[CONCEPT]} "Ensuring the 'ACID' properties of the clinical marketplace."
+    \begin{itemize}
+        \item \textbf{Transactional Atomicity:} Uses \texttt{beginTransaction()} so that restocks and payment logs succeed or fail as a single atomic unit.
+        \item \textbf{Uber-Handshake:} Replaces static lists with a dynamic Bidding State Machine (Pending $\to$ Accepted/Declined).
+        \item \textbf{Proximity Awareness:} System ranks providers based on distance to optimize clinical delivery time.
+    \end{itemize}
+\end{presentercard}
+
+\vspace{0.4cm}
+
+\begin{presentercard}{CARD 4: THE SECURITY FORTRESS}
+    \begin{minipage}{0.62\textwidth}
+        \textbf{[CONCEPT]} "Stateless, cryptographic defense of patient data."
+        \begin{itemize}
+            \item \textbf{Bcrypt Hashing:} Passwords are never stored. We store a 60-character salted hash with 10 work rounds to block brute-force attacks.
+            \item \textbf{JWT Authentication:} Uses a Header-Payload-Signature structure. This enables stateless verification without needing server-side session memory.
+        \end{itemize}
+    \end{minipage}
+    \begin{minipage}{0.35\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.7, every node/.style={transform shape}]
+            \node (pass) at (0,2) [draw] {Input};
+            \node (hash) at (0,0) [draw, cylinder, shape border rotate=90, fill=clinicalteal!20] {BCRYPT};
+            \draw[->, thick] (pass) -- node[right] {Salt} (hash);
+            \node (jwt) at (2.5,1) [draw, cloud, fill=clinicalblue!10, text width=1.2cm, align=center] {JWT Token};
+            \node at (2.5,-0.2) {\tiny Stateless};
+        \end{tikzpicture}
+    \end{minipage}
+\end{presentercard}
+
+\vspace{0.4cm}
+
+\begin{presentercard}{CARD 5: SMART UX \& NATIVE NAVIGATION}
+    \begin{minipage}{0.62\textwidth}
+        \textbf{[CONCEPT]} "Making a web app behave like a native desktop tool."
+        \begin{itemize}
+            \item \textbf{History API:} Directly manipulates the browser's \texttt{pushState} stack to enable Back/Forward buttons without reloads.
+            \item \textbf{Graceful Fallback:} Automated SSL detection logic switches between HTTPS and HTTP modes to ensure maximum server uptime.
+            \item \textbf{Vector Visuals:} Zero-image SVG architecture ensures professional clarity on any clinical display.
+        \end{itemize}
+    \end{minipage}
+    \begin{minipage}{0.35\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.8, every node/.style={transform shape}]
+            \draw[thick] (0,0) rectangle (2.5,1.8);
+            \draw[fill=clinicalblue!20] (0.2,1.2) rectangle (2.3,1.6);
+            \node at (1.25,0.9) {\tiny No Refresh};
+            \draw[->, clinicalblue, thick] (-0.5,0.9) arc (180:0:0.4);
+            \node at (-0.1,1.5) {\tiny \texttt{History}};
+        \end{tikzpicture}
+    \end{minipage}
+\end{presentercard}
+
+\end{document}

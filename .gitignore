@@ -1,0 +1,29 @@
+# Environment and Keys
+.env
+key.pem
+cert.pem
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Uploads and temporary files
+uploads/*
+!uploads/.gitkeep
+
+# Build and IDE files
+.vscode/
+.idea/
+dist/
+build/

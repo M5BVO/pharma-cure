@@ -1,0 +1,38 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\geometry{margin=1in}
+
+\title{Pharma-Cure V4: Unified Clinical Network \\ \large Technical Specification \& Architecture}
+\author{Pharma-Cure Engineering Team}
+\date{June 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+Pharma-Cure V4 is an advanced, geolocation-aware pharmacy management ecosystem. Unlike traditional inventory systems, V4 implements a dynamic \textbf{Proposal-based Economy} (Uber-like model) where patients, pharmacists, and suppliers negotiate prices and quantities in real-time.
+
+\section{System Architecture}
+The system is built on a Node.js Express backend with a MySQL relational database. The frontend is a sophisticated Single Page Application (SPA) utilizing CSS Grid and modern JavaScript.
+
+\section{Economic Model: The Proposal System}
+Fixed price lists have been deprecated in favor of a \textbf{Negotiated Proposal} model.
+\begin{itemize}
+    \item \textbf{Patient to Pharmacy:} Patients broadcast a medicine requirement with a target price. Pharmacies accept or reject based on stock and profitability.
+    \item \textbf{Pharmacy to Supplier:} Pharmacists propose restock batches to suppliers. The system provides a ``System Rating'' (Excellent, Good, Fair, Poor) to advise on market competitiveness.
+\end{itemize}
+
+\section{Database Schema}
+The relational model consists of five primary entities: Users, Patients, Pharmacies, Medicines, and Proposals. Geolocation data (latitude and longitude) is stored with 8-decimal precision to ensure high accuracy.
+
+\section{UI/UX Philosophy}
+The visual identity follows a \textbf{Clean Clinical} aesthetic. The design is optimized for high-density information display, removing non-professional elements such as emojis and utilizing the full screen width (wrap-around layout) for complex data tables and analytics.
+
+\end{document}

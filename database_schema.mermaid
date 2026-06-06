@@ -1,0 +1,132 @@
+erDiagram
+    USERS ||--o| PHARMACISTS : "has profile"
+    USERS ||--o| PATIENTS : "has profile"
+    USERS ||--o{ PHARMACIES : "owns"
+    USERS ||--o{ SUPPLIER_STOCK : "stocks"
+    USERS ||--o{ SUPPLIER_ORDERS : "supplies"
+    
+    PHARMACIES ||--o{ PHARMACY_MEDICINES : "inventory"
+    PHARMACIES ||--o{ ORDERS : "fulfills"
+    PHARMACIES ||--o{ SUPPLIER_ORDERS : "receives"
+    PHARMACIES ||--o{ COMPLAINTS : "receives"
+    
+    MEDICINES ||--o{ PHARMACY_MEDICINES : "categorizes"
+    MEDICINES ||--o{ SUPPLIER_STOCK : "categorizes"
+    MEDICINES ||--o{ PROPOSALS : "proposed"
+    MEDICINES ||--o{ ORDERS : "ordered"
+    MEDICINES ||--o{ SUPPLIER_ORDERS : "ordered"
+    
+    PATIENTS ||--o{ ORDERS : "places"
+    PATIENTS ||--o{ COMPLAINTS : "files"
+    
+    PROPOSALS ||--o| ORDERS : "finalizes"
+    PROPOSALS ||--o| SUPPLIER_ORDERS : "finalizes"
+    
+    ORDERS ||--o| COMPLAINTS : "subject of"
+
+    USERS {
+        int userID PK
+        string username
+        string password
+        enum role
+        string email
+        enum status
+    }
+
+    PHARMACISTS {
+        int pharmacistID PK
+        int userID FK
+        string degree_path
+        string cv_path
+    }
+
+    PATIENTS {
+        int patientID PK
+        int userID FK
+        string first_name
+        string last_name
+        date dateOfBirth
+        string disease
+        string location
+        decimal latitude
+        decimal longitude
+    }
+
+    MEDICINES {
+        int medicineID PK
+        string name
+        text used_for
+        date general_expiry_date
+    }
+
+    PHARMACIES {
+        int pharmacyID PK
+        int ownerID FK
+        string name
+        string location
+        decimal latitude
+        decimal longitude
+        string supplier_company
+        enum status
+        string photo_path
+    }
+
+    PHARMACY_MEDICINES {
+        int pharmacyID PK, FK
+        int medicineID PK, FK
+        int quantity
+        decimal price_per_unit
+    }
+
+    SUPPLIER_STOCK {
+        int supplierID PK, FK
+        int medicineID PK, FK
+        int quantity
+    }
+
+    PROPOSALS {
+        int proposalID PK
+        enum type
+        int initiatorID
+        int responderID
+        int medicineID FK
+        int quantity
+        decimal proposed_price
+        enum status
+        enum system_rating
+        datetime created_at
+    }
+
+    ORDERS {
+        int orderID PK
+        int proposalID FK
+        int patientID FK
+        int medicineID FK
+        int pharmacyID FK
+        datetime order_date
+        decimal final_cost
+        enum status
+        int rating
+    }
+
+    SUPPLIER_ORDERS {
+        int sOrderID PK
+        int proposalID FK
+        int pharmacyID FK
+        int medicineID FK
+        int quantity
+        datetime order_date
+        enum status
+        int supplierID FK
+    }
+
+    COMPLAINTS {
+        int complaintID PK
+        int patientID FK
+        int pharmacyID FK
+        int orderID FK
+        string subject
+        text details
+        enum status
+        datetime created_at
+    }
